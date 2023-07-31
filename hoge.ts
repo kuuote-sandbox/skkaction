@@ -1,14 +1,6 @@
 import * as u from "https://deno.land/x/unknownutil@v3.2.0/mod.ts";
 
-type Event = {
-  action: string;
-  issue: {
-    body: string;
-    number: number;
-  };
-};
-
-const isEvent: u.Predicate<Event> = u.isObjectOf({
+const isEvent = u.isObjectOf({
   action: u.isString,
   issue: u.isObjectOf({
     body: u.isString,
@@ -16,12 +8,12 @@ const isEvent: u.Predicate<Event> = u.isObjectOf({
   }),
 });
 
-isEvent(42);
+type Event = typeof isEvent extends u.Predicate<infer T> ? T : never;
 
 async function main() {
-  const a = JSON.parse(await Deno.readTextFile(Deno.args[0])) as unknown;
-  u.assert(a, isEvent);
-  console.log(a);
+  const event = JSON.parse(await Deno.readTextFile(Deno.args[0])) as unknown;
+  u.assert(event, isEvent);
+  console.log(event);
   return 0;
 }
 
