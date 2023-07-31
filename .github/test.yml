@@ -1,0 +1,19 @@
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.35.3
+      - name: 'Run script'
+        run: deno run -A ./hoge.ts '${{ github.event_path }}'
+name: hoge
+'on':
+  issues:
+    types:
+      - opened
+      - reopened
+      - edited
+      - closed
