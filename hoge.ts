@@ -1,2 +1,2 @@
-const a = await new Response(Deno.stdin.readable).text();
+const a = Deno.readTextFileSync(Deno.args[0]);
 console.log(a);
